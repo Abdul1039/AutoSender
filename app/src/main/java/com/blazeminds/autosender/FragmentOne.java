@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
+import com.google.android.gms.maps.GoogleMap;
+
 /*
  * Created by Abdul on 4/9/2019.
  */
@@ -111,6 +113,7 @@ public class FragmentOne extends Fragment {
 		Dialog dialog = new Dialog(activity,R.style.AppTheme);
 		
 		dialog.setContentView(R.layout.map);
+		
 		dialog.show();
 		
 	}
