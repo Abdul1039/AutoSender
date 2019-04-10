@@ -1,5 +1,7 @@
 package com.blazeminds.autosender;
 
+import android.Manifest;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		
-		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},1);
+		}
 		
 		viewPager = (ViewPager) findViewById(R.id.viewpager);
 		setupViewPager(viewPager);
