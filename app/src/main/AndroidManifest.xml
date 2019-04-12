@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +15,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value= "AIzaSyCsWQJQrL8gbUarb5qygWq_Z0uLb6ZpEuM"/>
+            android:value="AIzaSyCsWQJQrL8gbUarb5qygWq_Z0uLb6ZpEuM" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -25,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Main2Activity"></activity>
     </application>
 
 </manifest>

@@ -1,106 +1,80 @@
 package com.blazeminds.autosender;
 
-
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 
-/*
- * Created by Abdul on 4/9/2019.
- */
-
-public class FragmentOne extends Fragment {
-	
-	private Dialog dialog;
+public class Main2Activity extends AppCompatActivity {
+	//private Dialog dialog;
 	private GoogleMap googleMap;
 	private SeekBar setZoom;
 	private Handler handler = new Handler();
-	private SeekBar radius;
-	private EditText radiusValues;
-	private Button setCoordinates;
+	//private SeekBar radius;
+	//private EditText radiusValues;
+	//private Button setCoordinates;
 	private LatLng latLng;
-	private Location getLoc;
+	private static Location getLoc;
 	private float getZoom = 15;
 	private Switch mView;
 	private boolean move = true;
 	private SupportMapFragment mapFragment;
 	private Button setLocDone;
-	
+	private int radius = 50;
 	
 	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	}
-	
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		setContentView(R.layout.map);
 		
-		View view = inflater.inflate(R.layout.fragment_one, container, false);
 		
-		initView(view, savedInstanceState);
+		Bundle bundle = getIntent().getExtras();
 		
-		return view;
-	}
-	
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-	}
-	
-	private void initView(View view, final Bundle bundle) {
+		if (bundle != null) {
+			radius = bundle.getInt("radius");
+		}
 		
-		radius = view.findViewById(R.id.radius);
-		radiusValues = view.findViewById(R.id.radiusValue);
-		setCoordinates = view.findViewById(R.id.setCoordinate);
+		//radius = findViewById(R.id.radius);
+		//radiusValues = findViewById(R.id.radiusValue);
+		//setCoordinates = findViewById(R.id.setCoordinate);
 		
-		radius.setProgress(2);
+	/*	radius.setProgress(2);
 		radiusValues.setText(String.valueOf(radius.getProgress()));
-		radiusValues.setSelection(radiusValues.getText().length());
+		radiusValues.setSelection(radiusValues.getText().length());*/
 		
-		radiusValues.setCursorVisible(false);
+		//	radiusValues.setCursorVisible(false);
 		
-		radiusValues.setOnTouchListener(new View.OnTouchListener() {
+/*		radiusValues.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View view, MotionEvent motionEvent) {
 				radiusValues.setCursorVisible(true);
 				return false;
 			}
-		});
-		radius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+		});*/
+		/*radius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, final int i, final boolean b) {
 				
@@ -127,45 +101,25 @@ public class FragmentOne extends Fragment {
 			}
 		});
 		
-		
-		setCoordinates.setOnClickListener(new View.OnClickListener() {
+		*/
+		/*setCoordinates.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				
-				//startActivity(new Intent(getActivity(),Main2Activity.class));
-				
-				Intent intent = new Intent(getActivity(),Main2Activity.class);
-				
-				intent.putExtra("radius",radiusValues.getText().toString());
-				
-				startActivityForResult(intent,1);
+	 
 				//displayMap(getActivity(), bundle);
 			}
-		});
-	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+		});*/
 		
-		Log.e("===================",requestCode +" "+resultCode);
 		
-		System.out.println("=================== : "+data.getStringExtra("str"));
-		
-	}
-	
-	private void displayMap(final FragmentActivity activity, Bundle bundle) {
-		
-		dialog = new Dialog(activity, R.style.AppTheme);
-		dialog.setContentView(R.layout.map);
-		mapFragment = (SupportMapFragment) activity.getSupportFragmentManager().findFragmentById(R.id.mapView);
+		mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
 		//mapFragment.onCreate(bundle);
-		setLocDone = dialog.findViewById(R.id.setLocDone);
-		setZoom = dialog.findViewById(R.id.setZoom);
-		mView = dialog.findViewById(R.id.switch1);
+		setLocDone = findViewById(R.id.setLocDone);
+		setZoom = findViewById(R.id.setZoom);
+		mView = findViewById(R.id.switch1);
 		mView.setChecked(false);
 		mView.setTextOff("Satellite off");
-		final LocationManager manager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+		final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		
 		final LocationListener locationListener = new LocationListener() {
 			@Override
@@ -192,11 +146,18 @@ public class FragmentOne extends Fragment {
 			}
 		};
 		
-		if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+		/*  Circle circle = googleMap.addCircle(new CircleOptions()
+											  .center(new LatLng(getLoc.getLatitude(),getLoc.getLongitude()))
+											  .radius(10000)
+											  .strokeColor(Color.RED)
+											  .fillColor(Color.BLUE));*/
+		
+		
+		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 				requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
 			} else
-				Toast.makeText(activity, "Location Permission Required", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Location Permission Required", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if (manager != null) {
@@ -207,8 +168,8 @@ public class FragmentOne extends Fragment {
 			@Override
 			public void onMapReady(GoogleMap googleMap1) {
 				Location location = null;
-				LatLng latLng;
-				if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				final LatLng latLng;
+				if (ActivityCompat.checkSelfPermission(Main2Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Main2Activity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 					
 					return;
 				}
@@ -229,12 +190,20 @@ public class FragmentOne extends Fragment {
 					public void onCameraMove() {
 						if (move) {
 							setZoom.setProgress((int) googleMap.getCameraPosition().zoom);
+							
 						}
 						{
 							move = true;
 						}
 					}
 				});
+				
+				CircleOptions circleOptions = new CircleOptions();
+				circleOptions.center(latLng);
+				
+				circleOptions.strokeColor(Color.RED);
+				circleOptions.radius(radius);
+				googleMap.addCircle(circleOptions);
 				
 			}
 		};
@@ -282,19 +251,27 @@ public class FragmentOne extends Fragment {
 			@Override
 			public void onClick(View view) {
 				
-				dialog.dismiss();
+				
+				Intent intent = new Intent();
+				intent.putExtra("str", "123");
+				setResult(1, intent);
+				finish();
+				//dialog.dismiss();
 			}
 		});
 		
 		
 		mapFragment.getMapAsync(onMapReadyCallback);
 		
-		dialog.setCancelable(false);
-		
-		dialog.show();
-		
 		
 	}
 	
-	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		Intent intent = new Intent();
+		intent.putExtra("str", "123");
+		setResult(1, intent);
+		finish();
+	}
 }
